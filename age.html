@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>3-3 「年齡問題」列式挑戰賽</title>
+<style>
+:root { --c-blue:#4dabf7; --c-bg:#e7f5ff; --c-text:#1971c2; --c-org:#ff922b; --c-org-bg:#fff4e6; --c-org-text:#d9480f; --c-alert:#e03131; }
+body { margin: 0; padding: 0; background: var(--c-bg); font-family: 'Microsoft JhengHei', sans-serif; user-select: none; -webkit-user-select: none; overflow-x: hidden; }
+#g-p { max-width:850px; margin:20px auto; padding:30px; border:5px solid #f1f3f5; border-radius:20px; text-align:center; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.08); position:relative; }
+.pg-title { font-size:2.5rem; color:#ff0000; margin-bottom:30px; font-weight:900; }
+.pg-input-group { display:flex; justify-content:center; gap:20px; margin-bottom:30px; }
+.pg-input-wrap input { width:130px; font-size:2.2rem; text-align:center; padding:10px; border:3px solid #ddd; border-radius:12px; font-weight:bold; }
+.pg-btn { border:none; padding:15px 40px; font-size:2rem; border-radius:15px; cursor:pointer; font-weight:bold; background:#5c7cfa; color:white; }
+.pg-header { display:flex; gap:15px; margin-bottom:20px; }
+.pg-card { flex:1; background:var(--c-bg); padding:15px; border-radius:15px; border:2px solid var(--c-blue); font-weight:bold; }
+#q-t { font-size: 1.8rem; font-weight: bold; margin: 20px 0; color: #333; line-height: 1.8; min-height: 80px; }
+.fraction { display: inline-block; vertical-align: middle; text-align: center; font-size: 0.9em; }
+.fraction .top { display: block; border-bottom: 2px solid currentColor; padding: 0 2px; line-height: 1; }
+.fraction .bottom { display: block; padding: 0 2px; line-height: 1; }
+.pg-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.pg-o-b { background:#fff; border:3px solid var(--c-blue); font-size:1.4rem; padding:15px; border-radius:15px; cursor:pointer; font-weight:bold; min-height:80px; }
+.c-r { background:#40c057!important; color:#fff!important; }
+.w-r { background:#fa5252!important; color:#fff!important; }
+@media(max-width:768px){ .pg-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="g-p">
+    <div id="l-v">
+        <h1 class="pg-title">3-3 「年齡問題」列式挑戰賽</h1>
+        <div class="pg-input-group">
+            <div class="pg-input-wrap"><input type="tel" id="i-c" placeholder="班級"></div>
+            <div class="pg-input-wrap"><input type="tel" id="i-s" placeholder="座號"></div>
+        </div>
+        <button class="pg-btn" onclick="_z1()">開始挑戰</button>
+    </div>
+
+    <div id="g-v" style="display:none;">
+        <div class="pg-header">
+            <div class="pg-card">倒數：<span id="t-v">60</span></div>
+            <div class="pg-card">得分：<span id="s-v">0</span></div>
+        </div>
+        <div id="q-t"></div>
+        <div class="pg-grid" id="o-g"></div>
+    </div>
+
+    <div id="r-v" style="display:none;">
+        <h2 id="f-id"></h2>
+        <h1 class="pg-title">最終得分：<span id="f-s">0</span></h1>
+        <button class="pg-btn" onclick="location.reload()">再試一次</button>
+    </div>
+</div>
+
+<script>
+(function(){
+    var _a=0,_b=60,_c=null,_d=false,_e="",_f=[];
+    function _r(m,n){return Math.floor(Math.random()*(n-m+1))+m;}
+    function _fr(t,b){return `<span class="fraction"><span class="top">${t}</span><span class="bottom">${b}</span></span>`;}
+
+    window._z1 = function(){
+        if(!document.getElementById('i-c').value || !document.getElementById('i-s').value) return alert('請輸入班級座號');
+        _d=true; document.getElementById('l-v').style.display='none'; document.getElementById('g-v').style.display='block';
+        _z2(); _c=setInterval(_z3,1000);
+    };
+
+    function _z3(){ _b--; document.getElementById('t-v').innerText=_b; if(_b<=0)_z5(); }
+
+    function _z2(){
+        if(!_d)return;
+        var rL=[{b:"父親",s:"兒子"},{b:"母親",s:"女兒"},{b:"老師",s:"學生"}];
+        var r=rL[_r(0,rL.length-1)];
+        var t=_r(0,2);
+        var qO={};
+
+        if(t==0){
+            var df=_r(20,35),sm=_r(50,80);
+            qO={q:`${r.b}比${r.s}大 ${df} 歲，兩人年齡和為 ${sm} 歲。若${r.s}今年 x 歲。`,a:`x+(x+${df})=${sm}`,o:[`x+(x+${df})=${sm}`,`x+(x-${df})=${sm}`,`2x=${sm}`,`x+${df}=${sm}`]};
+        }else if(t==1){
+            var mt=_r(2,4),tt=_r(40,70);
+            qO={q:`${r.b}年齡是${r.s}的 ${mt} 倍，兩人年齡和為 ${tt} 歲。若${r.s}今年 x 歲。`,a:`x+${mt}x=${tt}`,o:[`x+${mt}x=${tt}`,`x+${_fr('x',mt)}=${tt}`,`${mt}x-x=${tt}`,`x+x+${mt}=${tt}`]};
+        }else{
+            var pA=_r(35,50),pY=_r(2,5),pM=_r(3,5);
+            qO={q:`${r.b}今年 ${pA} 歲，${r.s}今年 x 歲。<span style='color:red;'>${pY} 年前</span>，${r.b}是${r.s}的 ${pM} 倍。`,a:`${pA}-${pY}=${pM}(x-${pY})`,o:[`${pA}-${pY}=${pM}(x-${pY})`,`${pA}-${pY}=${pM}x-${pY}`,`${pA}=${pM}(x-${pY})`,`${pA}-${pY}=${pM}x`]};
+        }
+
+        _e=qO.a; document.getElementById('q-t').innerHTML=qO.q;
+        var g=document.getElementById('o-g'); g.innerHTML="";
+        qO.o.sort(()=>Math.random()-0.5).forEach(o=>{
+            var b=document.createElement('button'); b.className='pg-o-b'; b.innerHTML=o;
+            b.onclick=function(){_z4(o,b)}; g.appendChild(b);
+        });
+    }
+
+    function _z4(v,b){
+        if(!_d)return;
+        if(v===_e){ _a+=10; b.classList.add('c-r'); }
+        else { _a-=5; b.classList.add('w-r'); }
+        document.getElementById('s-v').innerText=_a;
+        setTimeout(_z2,1000);
+    }
+
+    function _z5(){
+        clearInterval(_c); _d=false;
+        document.getElementById('g-v').style.display='none'; document.getElementById('r-v').style.display='block';
+        document.getElementById('f-s').innerText=_a;
+        document.getElementById('f-id').innerText = document.getElementById('i-c').value + " 班 " + document.getElementById('i-s').value + " 號";
+    }
+
+    document.addEventListener('keydown',function(e){
+        if(e.keyCode==123||(e.ctrlKey&&(e.shiftKey&&(e.keyCode==73||e.keyCode==74)||e.keyCode==85||e.keyCode==83||e.keyCode==67)))e.preventDefault();
+    });
+    document.addEventListener('selectstart',function(e){e.preventDefault();});
+})();
+</script>
+</body>
+</html>
