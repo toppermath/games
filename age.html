@@ -3,150 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>3-3 年齡問題全員競技場</title>
+<title>3-3 「年齡問題」全員競技挑戰賽</title>
 <style>
-/* 完全還原您最愛的綠色主題樣式 */
+/* 100% 保留您提供的精美 CSS 樣式 */
 :root { --c-blue:#4dabf7; --c-bg:#e7f5ff; --c-text:#1971c2; --c-org:#ff922b; --c-org-bg:#fff4e6; --c-org-text:#d9480f; --c-alert:#e03131; }
 body { margin: 0; padding: 0; background: var(--c-bg); font-family: 'Microsoft JhengHei', sans-serif; user-select: none; -webkit-user-select: none; }
-#game-simplify { max-width:850px; margin:20px auto; padding:25px; border:5px solid #f1f3f5; border-radius:20px; text-align:center; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.08); position:relative; overflow:hidden; }
-.pg-title { font-size:2.5rem; color:#ff0000; margin-bottom:20px; font-weight:900; text-shadow:2px 2px 4px rgba(0,0,0,0.1); }
-.pg-input-group { display:flex; justify-content:center; gap:15px; margin-bottom:20px; }
-.pg-input-wrap input { width:110px; font-size:2rem; text-align:center; padding:10px; border:3px solid #ddd; border-radius:12px; font-weight:bold; }
-.pg-btn { border:none; padding:15px 40px; font-size:2rem; border-radius:15px; cursor:pointer; font-weight:bold; background:#5c7cfa; color:white; transition: 0.2s; }
-.pg-btn:hover { background:#3b5bdb; }
-.pg-header { display:flex; gap:10px; margin-bottom:20px; }
-.pg-card { flex:1; background:var(--c-bg); padding:15px; border-radius:15px; border:2px solid var(--c-blue); font-weight:bold; }
-.pg-card .val { font-size:3rem; line-height:1; display:block; margin-top:5px; }
-#pg-problem-text { font-size: 1.8rem; font-weight: bold; margin: 25px 0; color: #333; line-height: 1.8; min-height: 80px; }
-.pg-options-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-.pg-opt-btn { background:#fff; border:3px solid var(--c-blue); font-size:1.4rem; padding:15px; border-radius:15px; cursor:pointer; font-weight:bold; min-height: 80px; }
-.pg-correct { background:#40c057!important; color:#fff!important; }
-.pg-wrong { background:#fa5252!important; color:#fff!important; }
-/* 排行榜視窗 */
-#rank-board { margin-top: 25px; text-align: left; background: #fff9db; border: 3px solid #fab005; border-radius: 15px; padding: 15px; display:none; }
-.rank-scroll { max-height: 300px; overflow-y: auto; margin-top: 10px; }
-.rank-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ffe066; font-size: 1.2rem; }
-.rank-top3 { font-weight: 900; color: #d9480f; background: #fff4e6; }
+#game-simplify { max-width:850px; margin:20px auto; padding:30px; border:5px solid #f1f3f5; border-radius:20px; text-align:center; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.08); transition:border-color 0.1s, box-shadow 0.1s; position:relative; overflow:hidden; }
+.pg-title { font-size:2.5rem; color:#ff0000; margin-bottom:30px; font-weight:900; text-shadow:2px 2px 4px rgba(0,0,0,0.15); line-height: 1.3; }
+.pg-input-group { display:flex; justify-content:center; gap:20px; margin-bottom:30px; }
+.pg-input-wrap label { display:block; font-size:1.5rem; margin-bottom:5px; font-weight:bold; color:#666; }
+.pg-input-wrap input { width:130px; font-size:2.2rem; text-align:center; padding:10px; border:3px solid #ddd; border-radius:12px; font-weight:bold; color:#333; }
+.pg-btn-start, .pg-btn-restart, .pg-btn-review { border:none; padding:15px 40px; font-size:2rem; border-radius:15px; cursor:pointer; font-family:'Microsoft JhengHei'; font-weight:bold; margin:10px; }
+.pg-btn-start, .pg-btn-restart { background:#5c7cfa; color:white; }
+.pg-btn-review { background:#fcc419; color:#d9480f; }
+.pg-header { display:flex; gap:15px; margin-bottom:20px; position:relative; }
+.pg-info-card { flex:1; background:var(--c-bg); color:var(--c-text); padding:15px; border-radius:15px; font-weight:bold; border:2px solid var(--c-blue); }
+.pg-info-card .label { display:block; font-size:1.2rem; opacity:0.8; }
+.pg-info-card .value { font-size:3.5rem; line-height:1.1; }
+#pg-combo-box { position:absolute; right:-20px; top:-15px; background:#ffec99; border:4px solid #e67700; border-radius:50%; width:100px; height:100px; display:flex; flex-direction:column; justify-content:center; align-items:center; transform:rotate(15deg); box-shadow:0 5px 15px rgba(230,119,0,0.4); z-index:10; }
+.combo-hide { display:none!important; }
+.combo-label { font-size:1.2rem; font-weight:bold; color:#e67700; margin-bottom:-5px; }
+.combo-val { font-size:3.5rem; font-weight:900; color:#d9480f; text-shadow:1px 1px 0 #fff; }
+.combo-pump { animation:pump 0.2s; }
+#turkey-overlay { position:absolute; top:15px; left:15px; width:auto; height:auto; background:transparent; z-index:999; display:flex; pointer-events:none; }
+.turkey-hide { display:none!important; }
+.turkey-content { display:flex; align-items:center; gap:10px; background:rgba(255,236,153,0.98); border:3px solid #e67700; border-radius:40px; padding:8px 25px; box-shadow:0 8px 15px rgba(0,0,0,0.2); animation:popInCorner 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.turkey-icon { font-size:3rem; line-height:1; animation:wobble 1s infinite; }
+.turkey-info { text-align:left; }
+.turkey-text { font-size:1.8rem; font-weight:900; color:#e03131; line-height:1; margin-bottom:2px; }
+.turkey-sub { font-size:1.1rem; color:#d9480f; font-weight:bold; }
+.pg-question-area { background:var(--c-org-bg); border:4px solid var(--c-org); padding:25px; border-radius:20px; margin-bottom:20px; }
+.pg-question-text { font-size:1.5rem; margin:0; color:var(--c-org-text); text-align:left; }
+#pg-problem-text { font-size: 1.8rem; font-weight: bold; margin: 20px 0 30px; color: #333; line-height: 1.8; text-align: center; padding: 0 10px; min-height: 80px; display: block; }
+.fraction { display: inline-block; vertical-align: middle; margin: 0 0.2rem; text-align: center; font-size: 0.9em; }
+.fraction .top { display: block; border-bottom: 2px solid currentColor; padding: 0 2px; line-height: 1; }
+.fraction .bottom { display: block; padding: 0 2px; line-height: 1; }
+.pg-options-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.pg-opt-btn { background:#fff; border:3px solid var(--c-blue); color:var(--c-text); font-size:1.4rem; padding:15px 5px; border-radius:15px; cursor:pointer; font-weight:bold; font-family:'Segoe UI', 'Microsoft JhengHei', sans-serif; display:flex; justify-content:center; align-items:center; min-height: 80px; line-height: 1.3; }
+.pg-opt-btn:hover { background:#e7f5ff; }
+.pg-correct { background:#40c057!important; color:#fff!important; border-color:#2b8a3e!important; }
+.pg-wrong { background:#fa5252!important; color:#fff!important; border-color:#c92a2a!important; }
+.pg-result-card { border:4px solid var(--c-blue); padding:30px 10px; border-radius:20px; background:#f8f9fa; margin-bottom:20px; }
+#pg-final-student-id { font-size:4rem; font-weight:900; color:#333; margin-bottom:10px; border-bottom:2px dashed #ccc; padding-bottom:15px; display:inline-block; min-width:80%; }
+#pg-final-score-num { font-size:8rem; font-weight:900; color:var(--c-alert); line-height:1; margin:10px 0 30px 0; }
+/* 全員排名專用樣式 */
+#all-ranks { margin-top: 20px; text-align: left; background: #fff9db; border: 3px solid #fab005; border-radius: 15px; padding: 20px; display:none; }
+.rank-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ffe066; font-size: 1.3rem; font-weight: bold; }
+.rank-top { background: #fff4e6; color: #d9480f; }
+@keyframes pump { 0%{transform:scale(1) rotate(15deg)} 50%{transform:scale(1.2) rotate(15deg)} 100%{transform:scale(1) rotate(15deg)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+@media(max-width:768px){ .pg-title{font-size:1.8rem} #pg-problem-text{font-size:1.3rem} .pg-opt-btn{font-size:1.1rem} .pg-options-grid{grid-template-columns:1fr} }
 </style>
-</head>
-<body oncontextmenu="return false;">
 
 <div id="game-simplify">
-    <div id="pg-login-view">
-        <h1 class="pg-title">3-3 「年齡問題」全員競技場</h1>
-        <div class="pg-input-group">
-            <div class="pg-input-wrap"><input type="tel" id="pg-class" placeholder="班級"></div>
-            <div class="pg-input-wrap"><input type="tel" id="pg-seat" placeholder="座號"></div>
-        </div>
-        <button class="pg-btn" onclick="GameSimp.start()">開始挑戰</button>
+  <div id="pg-login-view">
+    <h1 class="pg-title">3-3 「年齡問題」全員競技賽</h1>
+    <div class="pg-input-group">
+      <div class="pg-input-wrap"><label>班級</label><input type="tel" id="pg-class" placeholder="701" maxlength="3"></div>
+      <div class="pg-input-wrap"><label>座號</label><input type="tel" id="pg-seat" placeholder="05" maxlength="2"></div>
     </div>
+    <button class="pg-btn-start" onclick="GameSimp.start()">開始挑戰</button>
+  </div>
 
-    <div id="pg-game-view" style="display:none;">
-        <div class="pg-header">
-            <div class="pg-card">倒數<span class="val" id="pg-timer">60</span></div>
-            <div class="pg-card">得分<span class="val" id="pg-score">0</span></div>
-        </div>
-        <div id="pg-problem-text"></div>
-        <div class="pg-options-grid" id="pg-options"></div>
+  <div id="pg-game-view" style="display:none;">
+    <div class="pg-header">
+      <div class="pg-info-card">倒數<br><span class="value" id="pg-timer">60</span></div>
+      <div class="pg-info-card">得分<br><span class="value" id="pg-score">0</span></div>
+      <div id="pg-combo-box" class="combo-hide">
+        <div class="combo-label">連擊</div><div class="combo-val" id="pg-combo-num">0</div>
+      </div>
     </div>
+    <div class="pg-question-area">
+      <h2 class="pg-question-text">依題意列出方程式：</h2>
+      <div id="pg-problem-text"></div>
+      <div class="pg-options-grid" id="pg-options"></div>
+    </div>
+    <div id="turkey-overlay" class="turkey-hide">
+      <div class="turkey-content"><div class="turkey-icon">🦃</div><div class="turkey-info"><div class="turkey-text">嘉義火雞!</div><div class="turkey-sub" id="turkey-msg"></div></div></div>
+    </div>
+  </div>
 
-    <div id="pg-result-view" style="display:none;">
-        <h1 class="pg-title">挑戰結束！</h1>
-        <h2 id="pg-final-id"></h2>
-        <div style="font-size:5rem; color:red; font-weight:bold; margin-bottom:10px;" id="pg-final-score">0</div>
-        <p id="status-text">🏆 正在計算全班排名...</p>
-        
-        <div id="rank-board">
-            <h3 style="margin:0; color:#e67700;">🌟 全員即時英雄榜</h3>
-            <div class="rank-scroll" id="rank-list"></div>
-        </div>
-        
-        <button class="pg-btn" onclick="location.reload()" style="margin-top:20px;">再戰一場</button>
+  <div id="pg-result-view" style="display:none;">
+    <div class="pg-result-card">
+      <h2 class="pg-result-title">挑戰結果</h2>
+      <div id="pg-final-student-id"></div>
+      <div id="pg-final-score-num">0</div>
+      <p id="sync-status">📡 正在同步全班排名...</p>
+      <div id="all-ranks"><h3>🏆 全員即時英雄榜</h3><div id="rank-list"></div></div>
+      <button class="pg-btn-restart" onclick="location.reload()">再戰一場</button>
     </div>
+  </div>
 </div>
 
 <script>
-// 您專屬的 API 連接網址
-const _0x_secret_url = "https://script.google.com/macros/s/AKfycbxBPnJo1I_P6mKlJ0ALJ9J0HwcoYaYSOdFgkgZAtpQ26OQblc5irWpKLDD4JITJdYbe/exec";
+// 您專屬的 Google Apps Script 網址
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBPnJo1I_P6mKlJ0ALJ9J0HwcoYaYSOdFgkgZAtpQ26OQblc5irWpKLDD4JITJdYbe/exec";
 
 var GameSimp = (function() {
-    var score=0, time=60, timer=null, playing=false, ans="", audioCtx=null;
+  let score=0, time=60, timer=null, playing=false, ans="", combo=0, audioCtx=null;
 
-    function speak(t){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t); u.lang='zh-TW'; u.rate=1.4; window.speechSynthesis.speak(u); }
-    function initAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); }
-    function playBeep(f){ if(!audioCtx)return; var o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.5); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.5); }
-
-    function generate() {
-        var roles=[{b:"父親",s:"兒子"},{b:"母親",s:"女兒"},{b:"老師",s:"學生"}];
-        var r=roles[Math.floor(Math.random()*roles.length)];
-        var d=Math.floor(Math.random()*15+20), s=Math.floor(Math.random()*30+50);
-        ans = `x + (x + ${d}) = ${s}`;
-        document.getElementById('pg-problem-text').innerText = `${r.b}比${r.s}大 ${d} 歲，兩人年齡和為 ${s} 歲。若${r.s}今年 x 歲，列出方程式。`;
-        var g=document.getElementById('pg-options'); g.innerHTML="";
-        [`x + (x + ${d}) = ${s}`, `x + (x - ${d}) = ${s}`, `2x = ${s} + ${d}`, `x + x = ${s} - ${d}`].sort(()=>Math.random()-0.5).forEach(o=>{
-            var b=document.createElement('button'); b.className='pg-opt-btn'; b.innerText=o; b.onclick=function(){check(o,b)}; g.appendChild(b);
-        });
+  function initAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }
+  function speak(t){ window.speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(t); u.lang='zh-TW'; u.rate=1.4; window.speechSynthesis.speak(u); }
+  
+  // 還原您最滿意的所有音效邏輯
+  function playDingDong() {
+    if(!audioCtx) return; const n=audioCtx.currentTime; let o1=audioCtx.createOscillator(), g1=audioCtx.createGain();
+    o1.type='sine'; o1.frequency.setValueAtTime(523.25, n); g1.gain.setValueAtTime(1.0, n); g1.gain.exponentialRampToValueAtTime(0.01, n+0.5);
+    o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(n+0.5);
+    if(combo>=2){
+      let o2=audioCtx.createOscillator(), g2=audioCtx.createGain();
+      o2.type='sine'; o2.frequency.setValueAtTime(783.99+(combo*50), n+0.1); g2.gain.setValueAtTime(0.8, n+0.1); g2.gain.exponentialRampToValueAtTime(0.01, n+0.6);
+      o2.connect(g2); g2.connect(audioCtx.destination); o2.start(n+0.1); o2.stop(n+0.6);
     }
+  }
+  function playTurkeySound() {
+    if(!audioCtx) return; const n=audioCtx.currentTime; let o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='sawtooth'; o.frequency.setValueAtTime(200, n);
+    for(let i=0; i<10; i++){ o.frequency.linearRampToValueAtTime(350, n+i*0.08); o.frequency.linearRampToValueAtTime(200, n+i*0.08+0.04); }
+    g.gain.setValueAtTime(1.0, n); g.gain.exponentialRampToValueAtTime(0.01, n+0.8);
+    o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(n+0.8);
+  }
+  function playTick(timeLeft) {
+    if(!audioCtx) return; const n=audioCtx.currentTime; let o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='sine'; let f=(timeLeft<=10)?800+(10-timeLeft)*100:600; o.frequency.setValueAtTime(f, n);
+    g.gain.setValueAtTime((timeLeft<=10?0.5:0.2), n); g.gain.exponentialRampToValueAtTime(0.01, n+0.1);
+    o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(n+0.1);
+  }
+  function playWrong() { if(!audioCtx) return; let o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sawtooth'; o.frequency.value=150; g.gain.value=1.0; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.5); }
 
-    function check(v,b){
-        if(!playing)return;
-        if(v===ans){ score+=10; b.classList.add('pg-correct'); playBeep(523); }
-        else { score-=5; b.classList.add('pg-wrong'); playBeep(150); }
-        document.getElementById('pg-score').innerText=score;
-        setTimeout(generate, 800);
+  function getFrac(t, b) { return `<span class="fraction"><span class="top">${t}</span><span class="bottom">${b}</span></span>`; }
+
+  function generateQuestion() {
+    const type = Math.floor(Math.random()*5);
+    const r = [{b:"父親",s:"兒子"},{b:"母親",s:"女兒"},{b:"老師",s:"學生"}][Math.floor(Math.random()*3)];
+    let qObj={};
+    if(type==0){
+      let d=Math.floor(Math.random()*15+20), s=Math.floor(Math.random()*30+50);
+      qObj={q:`${r.b}比${r.s}大 ${d} 歲，兩人年齡和為 ${s} 歲。若${r.s}今年 x 歲。`, a:`x + (x + ${d}) = ${s}`, o:[`x + (x + ${d}) = ${s}`, `x + (x - ${d}) = ${s}`, `2x = ${s} + ${d}`, `x + x = ${s} - ${d}`]};
+    } else if(type==1){
+      let m=Math.floor(Math.random()*2+2), tt=Math.floor(Math.random()*30+40);
+      qObj={q:`${r.b}的年齡是${r.s}的 ${m} 倍，兩人年齡和為 ${tt} 歲。若${r.s}今年 x 歲。`, a:`x + ${m}x = ${tt}`, o:[`x + ${m}x = ${tt}`, `x + ${getFrac('x',m)} = ${tt}`, `${m}x - x = ${tt}`, `x + (x + ${m}) = ${tt}`]};
+    } else {
+      let y=Math.floor(Math.random()*5+3), mt=Math.floor(Math.random()*2+2), cur=Math.floor(Math.random()*10+30);
+      qObj={q:`${r.b}今年 ${cur} 歲，${r.s}今年 x 歲。<span style='color:red;'>${y} 年後</span>，${r.b}是${r.s}的 ${mt} 倍。`, a:`${cur} + ${y} = ${mt}(x + ${y})`, o:[`${cur} + ${y} = ${mt}(x + ${y})`, `${cur} + ${y} = ${mt}x + ${y}`, `${cur} = ${mt}(x + ${y})`, `(${cur} + ${y}) * ${mt} = x + ${y}`]};
     }
+    ans = qObj.a; document.getElementById('pg-problem-text').innerHTML = qObj.q;
+    let div = document.getElementById('pg-options'); div.innerHTML="";
+    qObj.o.sort(()=>Math.random()-0.5).forEach(o=>{
+      let b=document.createElement('button'); b.className='pg-opt-btn'; b.innerHTML=o; b.onclick=()=>check(o,b); div.appendChild(b);
+    });
+  }
 
-    function sendScore() {
-        var payload = {
-            classId: document.getElementById('pg-class').value,
-            seatId: document.getElementById('pg-seat').value,
-            score: score
-        };
-        fetch(_0x_secret_url, { method: "POST", body: JSON.stringify(payload) })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('status-text').innerText = "✅ 已同步全班數據";
-            document.getElementById('rank-board').style.display = "block";
-            var list = document.getElementById('rank-list'); list.innerHTML = "";
-            data.leaderboard.forEach((item, i) => {
-                var isTop = i < 3;
-                list.innerHTML += `<div class="rank-item ${isTop?'rank-top3':''}">
-                    <span>NO.${i+1} - ${item.id}</span>
-                    <span>${item.score} 分</span>
-                </div>`;
-            });
-        }).catch(() => { document.getElementById('status-text').innerText = "❌ 網路連線不穩，無法顯示排名"; });
+  function check(v, btn) {
+    if(!playing) return;
+    document.querySelectorAll('.pg-opt-btn').forEach(b=>b.disabled=true);
+    if(v === ans){
+      combo++; score+=10; btn.classList.add('pg-correct'); playDingDong();
+      if(combo>0 && combo%3===0){
+        let el=document.getElementById('turkey-overlay'); document.getElementById('turkey-msg').innerText=`連對 ${combo} 題太強啦`;
+        el.classList.remove('turkey-hide'); playTurkeySound(); setTimeout(()=>el.classList.add('turkey-hide'),1500);
+      }
+    } else {
+      combo=0; score-=10; btn.classList.add('pg-wrong'); playWrong();
+      document.querySelectorAll('.pg-opt-btn').forEach(b=>{if(b.innerHTML===ans) b.classList.add('pg-correct');});
+      let gv=document.getElementById('game-simplify'); gv.classList.remove('wrong-shake'); void gv.offsetWidth; gv.classList.add('wrong-shake');
     }
+    document.getElementById('pg-score').innerText=score;
+    document.getElementById('pg-combo-num').innerText=combo;
+    document.getElementById('pg-combo-box').className=combo>=2?'combo-pump':'combo-hide';
+    setTimeout(generateQuestion, 1200);
+  }
 
-    return {
-        start: function() {
-            if(!document.getElementById('pg-class').value || !document.getElementById('pg-seat').value) return alert("請輸入班級與座號！");
-            initAudio(); playing=true;
-            document.getElementById('pg-login-view').style.display='none';
-            document.getElementById('pg-game-view').style.display='block';
-            speak("挑戰開始"); generate();
-            timer = setInterval(function(){
-                time--; document.getElementById('pg-timer').innerText=time;
-                if(time<=10 && time>0) speak(time);
-                if(time<=0){
-                    clearInterval(timer); playing=false;
-                    document.getElementById('pg-game-view').style.display='none';
-                    document.getElementById('pg-result-view').style.display='block';
-                    document.getElementById('pg-final-score').innerText=score;
-                    document.getElementById('pg-final-id').innerText = document.getElementById('pg-class').value + "班" + document.getElementById('pg-seat').value + "號";
-                    speak("時間到，挑戰結束"); sendScore();
-                }
-            }, 1000);
+  function sendData() {
+    let payload = { classId: document.getElementById('pg-class').value, seatId: document.getElementById('pg-seat').value, score: score };
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
+    .then(res => res.json()).then(data => {
+      document.getElementById('sync-status').innerText = "✅ 全員排名同步完成";
+      document.getElementById('all-ranks').style.display = "block";
+      let list = document.getElementById('rank-list'); list.innerHTML = "";
+      data.leaderboard.forEach((item, i) => {
+        list.innerHTML += `<div class="rank-item ${i<3?'rank-top':''}"><span>NO.${i+1} - ${item.id}</span><span>${item.score}分</span></div>`;
+      });
+    }).catch(()=>document.getElementById('sync-status').innerText="❌ 網路同步失敗");
+  }
+
+  return {
+    start: function() {
+      if(!document.getElementById('pg-class').value || !document.getElementById('pg-seat').value) return alert('請輸入班級座號');
+      initAudio(); score=0; time=60; playing=true; combo=0;
+      document.getElementById('pg-login-view').style.display='none';
+      document.getElementById('pg-game-view').style.display='block';
+      speak("挑戰開始"); generateQuestion();
+      timer = setInterval(()=>{
+        time--; document.getElementById('pg-timer').innerText=time; playTick(time);
+        if(time>10 && time%10==0) speak("還剩"+time+"秒");
+        else if(time<=5 && time>0) speak(time);
+        if(time<=0){
+          clearInterval(timer); playing=false; speak("挑戰結束");
+          document.getElementById('pg-game-view').style.display='none';
+          document.getElementById('pg-result-view').style.display='block';
+          document.getElementById('pg-final-score-num').innerText=score;
+          document.getElementById('pg-final-student-id').innerText = document.getElementById('pg-class').value + "班" + document.getElementById('pg-seat').value + "號";
+          sendData();
         }
-    };
+      }, 1000);
+    }
+  };
 })();
 
-// 心血保護機制：禁止右鍵、選取、F12
-(function(){
+// 您要求的心血保護措施
+(function() {
     document.addEventListener('contextmenu', e=>e.preventDefault());
     document.addEventListener('selectstart', e=>e.preventDefault());
     document.addEventListener('keydown', e=>{
-        if(e.keyCode==123 || (e.ctrlKey && (e.shiftKey && (e.keyCode==73||e.keyCode==74) || e.keyCode==85||e.keyCode==83))) e.preventDefault();
+        if(e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode==73||e.keyCode==74)) || (e.ctrlKey && (e.keyCode==85||e.keyCode==83))) e.preventDefault();
     });
 })();
 </script>
